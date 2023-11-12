@@ -1,0 +1,2 @@
+django-select2==8.1.2
+django-redis==5.4.0
