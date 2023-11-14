@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %} login {% endblock title %}
 
 {% block content %}
-    {% include 'users/login.html' %}
-    {% include 'users/signup.html' %}
+<section class="my-2">
+    <div class="text-center">
+        <img src="{% static 'images/logo.png' %}" class="logo-header" alt="" />
+    </div>
+    <div class="row my-3">
+        <div class="col-6">
+            {% include 'users/login.html' %}
+        </div>
+        <div class="col-6">
+            {% include 'users/signup.html' %}
+        </div>
+    </div>
+</section>
 {% endblock content %}

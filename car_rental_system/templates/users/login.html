@@ -5,11 +5,23 @@
     <div class="card-body">
         <form id="loginForm" action="{% url 'users:login' %}" method="POST" novalidate>
             {% csrf_token %}
-            {{ login_form | crispy }}
+            
+            {% for error in login_form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+                
+            <div class="relative">
+                {{ login_form.login | as_crispy_field }}
+            </div>
+            <div class="relative">
+                {{ login_form.password | as_crispy_field }}
+            </div>
             <a class="button secondaryAction" href="">Forgot Password?</a>
         </form>
     </div>
-    <div class="card-footer">
+    <div class="card-footer text-end">
         <button class="btn btn-success" form="loginForm" type="submit">Login</button>
     </div>
 </div>

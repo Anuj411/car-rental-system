@@ -1,0 +1,11 @@
+.logo-header{
+    max-height:300px;
+    width: 15%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.asteriskField{
+    color: red;
+    margin-left: 5px;
+}

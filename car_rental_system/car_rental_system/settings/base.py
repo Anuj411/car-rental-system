@@ -46,6 +46,7 @@ LOCAL_APPS = [
     "app_modules.base",
     "app_modules.users",
     "app_modules.home",
+    "app_modules.customer",
 ]
 
 THIRD_PARTY_APPS = [
@@ -151,12 +152,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# All-auth
+# django all-auth
 
 AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
@@ -165,16 +170,21 @@ AUTHENTICATION_BACKENDS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-LOGIN_URL = reverse_lazy("users:register_login")
-SIGNUP_URL = reverse_lazy("users:register_login")
+LOGIN_URL = reverse_lazy("users:login_signup")
+SIGNUP_URL = reverse_lazy("users:login_signup")
 SIGNUP_REDIRECT_URL = reverse_lazy("account_login")
-LOGIN_REDIRECT_URL = reverse_lazy("home:home")
-LOGOUT_REDIRECT_URL = reverse_lazy("home:home")
+LOGIN_REDIRECT_URL = reverse_lazy("customer:home")
+LOGOUT_REDIRECT_URL = reverse_lazy("customer:home")
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 AUTH_USER_MODEL = "base.BaseUser"
+
+USER_MODEL_USERNAME_FIELD = "email"
+USERNAME_MIN_LENGTH = "5"
+
+ACCOUNT_ADAPTER = 'app_modules.base.adapter.CustomAdapter'
 
 # django_rest_framework
 
@@ -191,23 +201,23 @@ REST_FRAMEWORK = {
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# Django-select2
+# django-select2
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    "select2": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     },
+#     "select2": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/2",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
-SELECT2_CACHE_BACKEND = "select2"
+# SELECT2_CACHE_BACKEND = "select2"
