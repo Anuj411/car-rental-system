@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static crispy_forms_tags widget_tweaks %}
+
+{% block title %} Seller Sign Up {% endblock title %}
+
+{% block content %}
+<section class="my-2">
+    <div class="text-center">
+        <img src="{% static 'images/logo.png' %}" class="logo-header" alt="" />
+    </div>
+    <div class="card">
+        <div class="card-header">Sign Up</div>
+        <div class="card-body">
+            <form method="post" id="signupForm" novalidate>
+                {% csrf_token %}
+    
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {% endfor %}
+    
+                <div class="row">
+                    <div class="col-3">
+                        {{ form.first_name | as_crispy_field }}
+                    </div>
+                    <div class="col-3">
+                        {{ form.last_name | as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.email|remove_attr:"autofocus"|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.password1 | as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.password2 | as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.gst_no | as_crispy_field }}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-end">
+            <button class="btn btn-success" form="signupForm" type="submit">Sign Up</button>
+        </div>
+    </div>
+</section>
+{% endblock content %}

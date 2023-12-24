@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %} Home {% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css\jquery.dataTables.min.css' %}" />
+{% endblock style %}
+
+{% block content %}
+<div class="my-3 d-flex justify-content-between">
+    <h1>Hello, {{ request.user.get_full_name }}</h1>
+    <a href="{% url 'car:create_car' %}"><button class="btn btn-outline-success">Add New Car</button></a>
+    <a href="{% url 'seller:update_profile' request.user.id %}"><button class="btn btn-outline-success">Update Profile</button></a>
+</div>
+
+<div>
+    <table class="display" style="width:100%" id="id_car_table">
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <!--<th>Image</th>-->
+                <th>Model</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script src="{% static 'js\jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js\initialized_datatable.js' %}"></script>
+
+<script>
+    var table_id = "id_car_table";
+    var columns = [
+        //{ data: 'car_image', name: 'car_image' },
+        { data: 'id', name: 'id' },
+        { data: 'model', name: 'model' },
+        { data: 'type', name: 'type' },
+        { data: 'price', name: 'price' },
+        { data: 'actions', name: 'actions' },
+    ]
+    var url = "{% url 'seller:car_list' %}";
+
+    var table = initialize_datatable();
+
+    table.on('click', 'tbody tr', function (e) {
+        e.currentTarget.classList.toggle('selected');
+    });
+</script>
+
+{% endblock script %}
+    

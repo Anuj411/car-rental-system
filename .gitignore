@@ -6,4 +6,7 @@ venv/
 .env
 media/
 
+migrations/
+__pycache__/
+
 *.sqlite3

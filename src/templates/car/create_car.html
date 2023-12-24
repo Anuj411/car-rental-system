@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static crispy_forms_tags widget_tweaks %}
+
+{% block title %} Add New Car {% endblock title %}
+
+{% block content %}
+
+<section class="my-3">
+    <h3>Add New Car</h3>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            
+            <div class="col-6">
+                {{ form.model | as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.type | as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.company | as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.price | as_crispy_field }}
+            </div>
+            
+            {% if request.user.role == request.user.ADMIN %}
+            <div class="col-6">
+                {{ form.created_by | as_crispy_field }}
+            </div>
+            {% else %}
+            <div class="col-6">
+                <input type="hidden" name="created_by" value="{{ request.user }}" />
+            </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <b>Car images :</b>
+        </div>
+    
+        {% for formset in inlines %}
+            {{ formset.management_form }}
+            {% for form in formset %}
+            
+                {% if forloop.counter0 == 0 %}
+                <div class="extra-form-main">
+                {% endif %}
+                    <div class="row" id="row-{{ forloop.counter0 }}-">
+                        {{ form.id }}
+                        <div class="col-3">
+                            {{ form.order | as_crispy_field }}
+                        </div>
+                        <div class="col-3">
+                            {{ form.title | as_crispy_field }}
+                        </div>
+                        <div class="col-3">
+                            {{ form.image | as_crispy_field }}
+                        </div>
+                        <div class="col-3 my-auto delete-wrap {% if forloop.counter0 == 0 %}hidden{% endif %}">
+                            <a href="javascript:void(0)" class="delete-row" data-row="#row-{{ forloop.counter0 }}-">
+                                <i class="fa fa-trash fa-lg text-danger"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% if forloop.counter0 == 0 %}
+                </div>
+                {% endif %}
+
+            {% endfor %}
+            <div class="extra-form-add"></div>
+        {% endfor %}
+        <div class="row">
+            <div class="col-9 text-end">
+                <button type="button" class="btn btn-light add-extra-form"> <i class="fa fa-plus"></i> Add more </button>
+            </div>
+        </div>
+        <div class="my-2 text-end">
+            <input class="btn btn-success" type="submit" value="Add Car" />
+        </div>
+    </form>
+</section>
+{% endblock content %}
+
+
+{% block script %}
+    <script>
+        $(".add-extra-form").click(function(){
+            var total_forms = $("#id_image_set-TOTAL_FORMS").val();
+
+            var html = $(".extra-form-main").html();
+            html = html.replaceAll("-0-", `-${total_forms}-`);
+            var row = $.parseHTML(html);
+            $(".extra-form-add").append(row);
+            $(row).find(".delete-wrap").show();
+            $(row).find(".invalid-feedback").remove();
+            $(row).find("input").removeClass("is-invalid");
+            $(row).find("input[type=text]").val("");
+            $(row).find("input[type=number]").val(0);
+
+            $("#id_image_set-TOTAL_FORMS").val(++total_forms);
+        });
+
+        $(document).on("click", ".delete-row", function(){
+            let row_id = $(this).data("row");
+            var total_forms = $("#id_image_set-TOTAL_FORMS").val();
+
+            $(row_id).remove();
+            $("#id_image_set-TOTAL_FORMS").val(--total_forms);
+        });
+    </script>
+{% endblock script %}

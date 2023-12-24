@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags widget_tweaks %}
+
+{% block content %}
+
+<section>
+    <h1>Welcome, {% if request.user.is_authenticated %}{{ request.user.get_full_name }}{% endif %}</h1>
+
+</section>
+{% endblock content %}
+
+
+{% block script %}
+    
+{% endblock script %}
+    
